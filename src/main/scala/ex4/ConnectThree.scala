@@ -12,24 +12,24 @@ object ConnectThree extends App:
       case _ => X
 
   case class Disk(x: Int, y: Int, player: Player)
-  /**
-   * Board:
-   * y
-   *
-   * 3
-   * 2
-   * 1
-   * 0
-   *   0 1 2 3 <-- x
-   */
+
+  /** Board: y
+    *
+    * 3 2 1 0 0 1 2 3 <-- x
+    */
   type Board = Seq[Disk]
   type Game = Seq[Board]
 
   import Player.*
 
-  def find(board: Board, x: Int, y: Int): Option[Player] = ???
+  def find(board: Board, x: Int, y: Int): Option[Player] =
+    board.find(d => d.x == x && d.y == y).map(_.player)
 
-  def firstAvailableRow(board: Board, x: Int): Option[Int] = ???
+  def firstAvailableRow(board: Board, x: Int): Option[Int] =
+    val rows = board.filter(_.x == x).map(_.y)
+    if rows.isEmpty then Some(0)
+    else if rows.length == bound + 1 then None
+    else Some(rows.max + 1)
 
   def placeAnyDisk(board: Board, player: Player): Seq[Board] = ???
 
@@ -49,7 +49,9 @@ object ConnectThree extends App:
   // Exercise 1: implement find such that..
   println("EX 1: ")
   println(find(List(Disk(0, 0, X)), 0, 0)) // Some(X)
-  println(find(List(Disk(0, 0, X), Disk(0, 1, O), Disk(0, 2, X)), 0, 1)) // Some(O)
+  println(
+    find(List(Disk(0, 0, X), Disk(0, 1, O), Disk(0, 2, X)), 0, 1)
+  ) // Some(O)
   println(find(List(Disk(0, 0, X), Disk(0, 1, O), Disk(0, 2, X)), 1, 1)) // None
 
   // Exercise 2: implement firstAvailableRow such that..
@@ -57,8 +59,15 @@ object ConnectThree extends App:
   println(firstAvailableRow(List(), 0)) // Some(0)
   println(firstAvailableRow(List(Disk(0, 0, X)), 0)) // Some(1)
   println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X)), 0)) // Some(2)
-  println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X)), 0)) // Some(3)
-  println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X), Disk(0, 3, X)), 0)) // None
+  println(
+    firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X)), 0)
+  ) // Some(3)
+  println(
+    firstAvailableRow(
+      List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X), Disk(0, 3, X)),
+      0
+    )
+  ) // None
   // Exercise 2: implement placeAnyDisk such that..
   printBoards(placeAnyDisk(List(), X))
   // .... .... .... ....
