@@ -51,9 +51,7 @@ class RobotWithBattery(val robot: Robot, var battery: Int) extends Robot:
   override def act(): Unit = checkAndAct(() => robot.act())
 
   private def checkAndAct(f: () => Unit): Unit =
-    if battery > 0 then
-      f()
-      battery -= 1
+    if battery > 0 then { f(); battery -= 1 }
 
 class RobotCanFail(val robot: Robot, var probability: Double) extends Robot:
   export robot.{position, direction}
