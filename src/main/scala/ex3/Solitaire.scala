@@ -1,7 +1,11 @@
 package ex3
 
 object Solitaire extends App:
-  def render(solution: Seq[(Int, Int)], width: Int, height: Int): String =
+
+  type Cell = (Int, Int)
+  type Solution = Seq[Cell]
+
+  def render(solution: Seq[Cell], width: Int, height: Int): String =
     val reversed = solution.reverse
     val rows =
       for
@@ -13,4 +17,6 @@ object Solitaire extends App:
       yield row.mkString
     rows.mkString("\n")
 
-  println(render(solution = Seq((0, 0), (2, 1)), width = 3, height = 3))
+  def placeMarks(width: Int, height: Int): List[Seq[Cell]] = ???
+
+  // println(render(solution = Seq((0, 0), (2, 1)), width = 3, height = 3))
