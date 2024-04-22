@@ -47,21 +47,23 @@ class LoggingRobot(val robot: Robot) extends Robot:
 
 class RobotWithBattery(val robot: Robot, var battery: Int) extends Robot:
   export robot.{position, direction}
-  override def turn(dir: Direction): Unit =
+  override def turn(dir: Direction): Unit = checkAndAct(() => robot.turn(dir))
+  override def act(): Unit = checkAndAct(() => robot.act())
+
+  private def checkAndAct(f: () => Unit): Unit =
     if battery > 0 then
-      robot.turn(dir)
-      battery -= 1
-  override def act(): Unit =
-    if battery > 0 then
-      robot.act()
+      f()
       battery -= 1
 
 class RobotCanFail(val robot: Robot, var probability: Double) extends Robot:
   export robot.{position, direction}
   override def turn(dir: Direction): Unit =
-    if probability < 1 && Random.nextDouble() < probability then robot.turn(dir)
+    if checkProbability() then robot.turn(dir)
   override def act(): Unit =
-    if probability < 1 && Random.nextDouble() < probability then robot.act()
+    if checkProbability() then robot.act()
+
+  private def checkProbability(): Boolean =
+    probability < 1 && Random.nextDouble() < probability
 
 class RobotRepeated(val robot: Robot, var times: Int) extends Robot:
   export robot.{position, direction, turn}
