@@ -14,46 +14,32 @@ object Solitaire extends App:
     val startingValue = getStartingValue(width, height)
     computeSolution(width, height)(initialPosition)(startingValue)
 
-  def renderSolution(
-      sol: Solution,
-      w: Int,
-      h: Int
-  ): String =
+  def renderSolution(sol: Solution, w: Int, h: Int): String =
     render(sol, w, h)
 
   private object ImplementationHelpers:
+    def computeSolution(w: Int, h: Int)(p: Position)(acc: Int): Solutions =
+      acc match
+        case 1 => List(List(p))
+        case _ =>
+          for
+            sol <- computeSolution(w, h)(p)(
+              acc - 1
+            )
+            x <- 0 until w
+            y <- 0 until h
+            nextPos = Position(x, y)
+            if isValidMove(sol, sol.last, nextPos)
+          yield sol :+ nextPos
 
-    def computeSolution(w: Int, h: Int)(p: Position)(
-        acc: Int
-    ): Solutions = acc match
-      case 1 => List(List(p))
-      case _ =>
-        for
-          sol <- computeSolution(w, h)(p)(
-            acc - 1
-          )
-          x <- 0 until w
-          y <- 0 until h
-          nextPos = Position(x, y)
-          if isValidMove(sol, sol.last, nextPos)
-        yield sol :+ nextPos
-
-    def isValidMove(
-        sol: Solution,
-        pos: Position,
-        next: Position
-    ): Boolean =
+    def isValidMove(sol: Solution, pos: Position, next: Position): Boolean =
       def canMove(): Boolean =
         val dx = (sol.last.x - pos.x).abs
         val dy = (sol.last.y - pos.y).abs
         (dx == 2 && dy == 0) || (dx == 0 && dy == 2) || (dx == 1 && dy == 1)
       canMove() && !sol.contains(next)
 
-    def render(
-        sol: Solution,
-        w: Int,
-        h: Int
-    ): String =
+    def render(sol: Solution, w: Int, h: Int): String =
       val reversed = sol
       val rows =
         for
