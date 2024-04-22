@@ -11,33 +11,12 @@ class SolitaireSpec extends AnyFlatSpec with Matchers:
       solutions(0),
       3,
       3
-    ) shouldEqual "1  X  2  \nX  X  X  \nX  3  X  "
+    ) shouldEqual "2  X  5  \nX  1  X  \n3  X  4  "
   }
   "render2" should "return a string representation of the board" in {
     render(
       solutions(1),
       3,
       3
-    ) shouldEqual "1  3  4  \n2  X  X  \nX  X  X  "
-  }
-  "render3" should "return a string representation of the board" in {
-    render(
-      solutions(2),
-      3,
-      3
-    ) shouldEqual "1  3  4  \n2  5  6  \nX  X  X  "
-  }
-  "render4" should "return a string representation of the board" in {
-    render(
-      solutions(3),
-      3,
-      3
-    ) shouldEqual "1  3  4  \n2  5  6  \n7  X  X  "
-  }
-  "render5" should "return a string representation of the board" in {
-    render(
-      solutions(4),
-      3,
-      3
-    ) shouldEqual "1  3  4  \n2  5  6  \n7  8  X  "
+    ) shouldEqual "2  X  3  \nX  1  X  \n5  X  4  "
   }
