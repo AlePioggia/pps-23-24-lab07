@@ -31,7 +31,15 @@ object ConnectThree extends App:
     else if rows.length == bound + 1 then None
     else Some(rows.max + 1)
 
-  def placeAnyDisk(board: Board, player: Player): Seq[Board] = ???
+  def placeAnyDisk(board: Board, player: Player): Seq[Board] =
+    val placements = validPlacements(board, player)
+    placements.map(newDisk => board :+ newDisk)
+
+  def validPlacements(board: Board, player: Player): Seq[Disk] =
+    for
+      x <- 0 to bound
+      y <- firstAvailableRow(board, x)
+    yield Disk(x, y, player)
 
   def computeAnyGame(player: Player, moves: Int): LazyList[Game] = ???
 
